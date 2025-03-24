@@ -12,12 +12,6 @@ export default async function handler(req, res) {
     
 // Log the request method for debugging
   console.log('Received HTTP method:', req.method);
-
-  // Temporary handling for GET to see what's coming in
-  if (req.method === 'GET') {
-    return res.status(200).json({ message: 'Received GET for debugging' });
-  }
-
     
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
@@ -84,6 +78,9 @@ Return the output as a valid JSON object with exactly two keys:
       .replace(/```json\s*/g, '')
       .replace(/```/g, '')
       .trim();
+      
+    // Debug log: output the cleaned content to Vercel logs
+    console.log("Cleaned content received from API:", cleanedContent);
 
     let resultJSON;
     try {
