@@ -52,12 +52,18 @@ Return the output as a valid JSON object with exactly two keys:
 
     const apiResult = await response.json();
     const messageContent = apiResult.choices[0].message.content;
-
+    
+    // Remove Markdown code fences if present
+    const cleanedContent = messageContent
+      .replace(/```json\s*/g, '')
+      .replace(/```/g, '')
+      .trim();
+    
     let resultJSON;
     try {
-      resultJSON = JSON.parse(messageContent);
+      resultJSON = JSON.parse(cleanedContent);
     } catch (err) {
-      throw new Error(`Failed to parse API response as JSON. Response was: ${messageContent}`);
+      throw new Error(`Failed to parse API response as JSON. Cleaned response was: ${cleanedContent}`);
     }
 
     res.setHeader('Access-Control-Allow-Origin', 'https://cover-letter-and-cv-generator.vercel.app');
