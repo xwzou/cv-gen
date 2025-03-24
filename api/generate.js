@@ -53,7 +53,7 @@ Return the output as a valid JSON object with exactly two keys:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4o',
+        model: 'openai/o3-mini',
         messages: [
           {
             role: 'user',
