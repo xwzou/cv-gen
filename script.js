@@ -10,7 +10,7 @@ document.getElementById('inputForm').addEventListener('submit', async (e) => {
 
   try {
     // Use your deployed Vercel URL when hosting separately
-    const response = await fetch('/api/generate', {
+    const response = await fetch('https://cover-letter-and-cv-generator.vercel.app/api/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
