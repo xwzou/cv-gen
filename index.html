@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cover Letter &amp; CV Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Cover Letter &amp; CV Generator</h1>
+  <form id="inputForm">
+    <label for="jobDescription">Job Description:</label><br>
+    <textarea id="jobDescription" name="jobDescription" rows="6" required></textarea><br><br>
+
+    <label for="experience">Your Experience:</label><br>
+    <textarea id="experience" name="experience" rows="6" required></textarea><br><br>
+
+    <button type="submit">Generate</button>
+  </form>
+
+  <div id="output">
+    <h2>Generated Cover Letter</h2>
+    <pre id="coverLetter"></pre>
+    <h2>Generated CV</h2>
+    <pre id="cv"></pre>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
