@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // Allow only POST requests
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -9,6 +10,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing job description or experience' });
   }
 
+  // Construct a prompt that instructs the model to output a JSON object.
   const prompt = `
 Please generate a cover letter and a CV based on the details below.
 
@@ -26,6 +28,7 @@ Return the output as a valid JSON object with exactly two keys:
 `;
 
   try {
+    // Call the OpenRouter API with the updated endpoint and payload
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -46,30 +49,27 @@ Return the output as a valid JSON object with exactly two keys:
     });
 
     if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`OpenRouter API responded with status ${response.status}: ${text}`);
+      throw new Error(`OpenRouter API responded with status ${response.status}`);
     }
 
     const apiResult = await response.json();
+
+    // Get the content from the API response (assuming it follows the ChatCompletion format)
     const messageContent = apiResult.choices[0].message.content;
-    
-    // Remove Markdown code fences if present
-    const cleanedContent = messageContent
-      .replace(/```json\s*/g, '')
-      .replace(/```/g, '')
-      .trim();
-    
+
+    // Attempt to parse the returned content as JSON
     let resultJSON;
     try {
-      resultJSON = JSON.parse(cleanedContent);
+      resultJSON = JSON.parse(messageContent);
     } catch (err) {
-      throw new Error(`Failed to parse API response as JSON. Cleaned response was: ${cleanedContent}`);
+      throw new Error(`Failed to parse API response as JSON. Response was: ${messageContent}`);
     }
 
+    // Set CORS header if needed and return the parsed JSON
     res.setHeader('Access-Control-Allow-Origin', 'https://cover-letter-and-cv-generator.vercel.app');
     res.status(200).json(resultJSON);
   } catch (error) {
-    console.error('Error in generate.js:', error);
+    console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
 }
