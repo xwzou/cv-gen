@@ -10,6 +10,15 @@ export default async function handler(req, res) {
     return;
   }
     
+// Log the request method for debugging
+  console.log('Received HTTP method:', req.method);
+
+  // Temporary handling for GET to see what's coming in
+  if (req.method === 'GET') {
+    return res.status(200).json({ message: 'Received GET for debugging' });
+  }
+
+    
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: 'Method Not Allowed' });

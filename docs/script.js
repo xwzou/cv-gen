@@ -35,7 +35,7 @@ document.getElementById('inputForm').addEventListener('submit', async (e) => {
     cvElement.textContent = data.cv;
   } catch (error) {
     console.error('Error:', error);
-    coverLetterElement.textContent = 'Error generating cover letter and CV.';
-    cvElement.textContent = 'Error generating cover letter and CV.';
+    coverLetterElement.textContent = error.message;
+    cvElement.textContent = error.message;
   }
 });
